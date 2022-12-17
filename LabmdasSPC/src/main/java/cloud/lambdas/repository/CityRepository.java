@@ -23,7 +23,7 @@ public class CityRepository {
                     connection.prepareStatement("SELECT * FROM City");
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                cities.add(new City(rs.getLong("id"),rs.getLong("companyId"),
+                cities.add(new City(rs.getLong("id"),rs.getLong("id"),
                         rs.getString("name")));
             }
         } catch (SQLException e) {
