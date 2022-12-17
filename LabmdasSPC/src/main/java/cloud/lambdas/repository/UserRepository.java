@@ -61,17 +61,17 @@ public class UserRepository {
         }
     }
 
-    public boolean addUser(User user) {
+    public boolean addUser(String firstName, String lastName, String email, String password, Boolean isAdmin) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO " +
                             "User(first_name, last_name, email, hashed_password, is_admin)" +
                             " values (?, ?, ?, ?, ?)");
-            selectStatement.setString(1, user.getFirstName());
-            selectStatement.setString(2, user.getLastName());
-            selectStatement.setString(3, user.getEmail());
-            selectStatement.setString(4, user.getHashedPassword());
-            selectStatement.setBoolean(5, user.isAdmin());
+            selectStatement.setString(1, firstName);
+            selectStatement.setString(2, lastName);
+            selectStatement.setString(3, email);
+            selectStatement.setString(4, password);
+            selectStatement.setBoolean(5, isAdmin);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

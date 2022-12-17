@@ -10,7 +10,7 @@ public class AddServiceHandler implements RequestHandler<Service, Boolean> {
     ServiceService serviceService = new ServiceService();
     @Override
     public Boolean handleRequest(Service service, Context context) {
-       return serviceService.addService(service);
+       return serviceService.addService(service.getName());
 
     }
 }

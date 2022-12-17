@@ -10,6 +10,6 @@ public class AddCompanyHandler implements RequestHandler<Company, Boolean> {
 
     @Override
     public Boolean handleRequest(Company company, Context context) {
-        return companyService.addCompany(company);
+        return companyService.addCompany(company.getName());
     }
 }

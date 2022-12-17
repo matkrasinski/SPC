@@ -25,8 +25,8 @@ public class CityService {
     }
 
 
-    public boolean addCity(City city) {
-        return cityRepository.addCity(city);
+    public boolean addCity(String cityName, Long companyId) {
+        return cityRepository.addCity(cityName, companyId);
     }
 
     public boolean deleteCity(Long cityId) {

@@ -64,11 +64,11 @@ public class CompanyRepository {
         }
     }
 
-    public boolean addCompany(Company company) {
+    public boolean addCompany(String companyName) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO Company(name) VALUES (?)");
-            selectStatement.setString(1, company.getName());
+            selectStatement.setString(1, companyName);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -18,8 +18,8 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
-    public boolean addUser(User user) {
-        return userRepository.addUser(user);
+    public boolean addUser(String firstName, String lastName, String email, String password, Boolean isAdmin) {
+        return userRepository.addUser(firstName, lastName, email, password, isAdmin);
     }
 
     public boolean deleteUser(Long userId) {

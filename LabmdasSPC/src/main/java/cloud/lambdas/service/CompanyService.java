@@ -23,8 +23,8 @@ public class CompanyService {
     public Company findCompanyById(Long companyId) {
         return companyRepository.findCompanyById(companyId);
     }
-    public boolean addCompany(Company company) {
-        return companyRepository.addCompany(company);
+    public boolean addCompany(String companyName) {
+        return companyRepository.addCompany(companyName);
     }
 
     public boolean deleteCompany(Long companyId) {

@@ -61,13 +61,12 @@ public class CityRepository {
         return city;
     }
 
-    public boolean addCity(City city) {
+    public boolean addCity(String cityName, Long companyId) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
-                    connection.prepareStatement("INSERT INTO City(name, company_id) values (?, ?, ?)");
-            selectStatement.setLong(1, city.getId());
-            selectStatement.setLong(2, city.getCompanyId());
-            selectStatement.setString(3, city.getName());
+                    connection.prepareStatement("INSERT INTO City(name, company_id) values (?, ?)");
+            selectStatement.setString(1, cityName);
+            selectStatement.setLong(2, companyId);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

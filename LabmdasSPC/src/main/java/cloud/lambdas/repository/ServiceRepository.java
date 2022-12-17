@@ -64,11 +64,11 @@ public class ServiceRepository {
         }
     }
 
-    public boolean addService(Service service) {
+    public boolean addService(String serviceName) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO Service(name) values (?)");
-            selectStatement.setString(1, service.getName());
+            selectStatement.setString(1, serviceName);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

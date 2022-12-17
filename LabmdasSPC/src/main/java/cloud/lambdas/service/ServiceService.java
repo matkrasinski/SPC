@@ -9,8 +9,8 @@ public class ServiceService {
 
     ServiceRepository serviceRepository = new ServiceRepository();
 
-    public boolean addService(Service service) {
-        return serviceRepository.addService(service);
+    public boolean addService(String serviceName) {
+        return serviceRepository.addService(serviceName);
     }
 
     public boolean deleteService(Long id) {

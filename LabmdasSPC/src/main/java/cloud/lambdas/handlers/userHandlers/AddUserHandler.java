@@ -10,7 +10,8 @@ public class AddUserHandler implements RequestHandler<User, Boolean> {
 
     @Override
     public Boolean handleRequest(User user, Context context) {
-        return userService.addUser(user);
+        return userService.addUser(user.getFirstName(), user.getLastName(),
+                user.getEmail(), user.getHashedPassword(), user.isAdmin());
 
     }
 }

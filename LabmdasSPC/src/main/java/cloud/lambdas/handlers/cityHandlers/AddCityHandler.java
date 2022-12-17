@@ -11,7 +11,7 @@ public class AddCityHandler implements RequestHandler<City, Boolean> {
 
     @Override
     public Boolean handleRequest(City city, Context context) {
-       return cityService.addCity(city);
+       return cityService.addCity(city.getName(), city.getCompanyId());
 
     }
 }

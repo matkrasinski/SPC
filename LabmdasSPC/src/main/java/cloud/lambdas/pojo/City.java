@@ -12,8 +12,7 @@ public class City {
         this.name = name;
     }
 
-    public City() {
-    }
+    public City() {}
 
     public Long getId() {
         return id;
