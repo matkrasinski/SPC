@@ -1,9 +1,9 @@
 package cloud.lambdas.repository;
 
 import cloud.lambdas.dbUtils.DatabaseConnection;
-import cloud.lambdas.model.Company;
-import cloud.lambdas.model.Day;
-import cloud.lambdas.model.Service;
+import cloud.lambdas.pojo.Company;
+import cloud.lambdas.pojo.Day;
+import cloud.lambdas.pojo.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,31 +27,31 @@ public class CompanyRepository {
         return companies;
     }
 
-    public Service findCompanyByName(String name) {
-        Service service = new Service();
+    public Company findCompanyByName(String name) {
+        Company company = new Company();
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM Company WHERE name = ?");
             selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                service = new Service(rs.getInt("id"), rs.getString("name"));
+                company = new Company(rs.getInt("id"), rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return service;
+        return company;
     }
-    public Service findCompanyById(Integer id) {
-        Service service = new Service();
+    public Company findCompanyById(Integer id) {
+        Company company = new Company();
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM Company WHERE id = ?");
             selectStatement.setInt(1, id);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                service = new Service(rs.getInt("id"), rs.getString("name"));
+                company = new Company(rs.getInt("id"), rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return service;
+        return company;
     }
     public boolean deleteCompany(Integer id) {
         try(Connection connection = this.databaseConnection.createConnection()) {
@@ -110,7 +110,7 @@ public class CompanyRepository {
         }
     }
 
-    public boolean addCompanyForbiddenDays(Integer companyId, Date date) {
+    public Day addCompanyForbiddenDays(Integer companyId, Date date) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO " +
@@ -118,7 +118,8 @@ public class CompanyRepository {
                             " values (?, ?)");
             selectStatement.setInt(1, companyId);
             selectStatement.setDate(2, date);
-            return !selectStatement.execute();
+            selectStatement.execute();
+            return new Day(companyId, date);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -138,5 +139,22 @@ public class CompanyRepository {
             throw new RuntimeException(e);
         }
         return days;
+    }
+
+    public List<Company> getCompaniesByCity(String cityName) {
+        List<Company> companies = new ArrayList<>();
+        try(Connection connection = this.databaseConnection.createConnection()) {
+            PreparedStatement selectStatement =
+                    connection.prepareStatement("SELECT * FROM Company co " +
+                            "JOIN City ci on co.id = ci.company_id WHERE ci.name = ?");
+            selectStatement.setString(1, cityName);
+            ResultSet rs = selectStatement.executeQuery();
+            while (rs.next()) {
+                companies.add(new Company(rs.getInt("id"), rs.getString("name")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return companies;
     }
 }

@@ -1,21 +1,23 @@
-package cloud.lambdas.model;
+package cloud.lambdas.pojo;
 
-public class Service {
-    private Integer id;
+public class City {
+    private int id;
     private String name;
 
-    public Service() {}
+    private int companyId;
 
-    public Service(Integer id, String name) {
+    public City() {}
+
+    public City(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

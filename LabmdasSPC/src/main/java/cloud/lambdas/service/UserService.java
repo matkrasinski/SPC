@@ -1,7 +1,9 @@
 package cloud.lambdas.service;
 
 import cloud.lambdas.dto.ServiceDto;
-import cloud.lambdas.model.User;
+import cloud.lambdas.pojo.CompanyService;
+import cloud.lambdas.pojo.CompanyUser;
+import cloud.lambdas.pojo.User;
 import cloud.lambdas.repository.UserRepository;
 
 import java.sql.Date;
@@ -11,6 +13,7 @@ public class UserService {
 
     UserRepository userRepository = new UserRepository();
 
+    ServiceService serviceService = new ServiceService();
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
@@ -27,12 +30,23 @@ public class UserService {
         return userRepository.findUserById(id);
     }
 
-    public boolean addServiceToUser(String email, Integer serviceId, Integer companyId, Date orderDate, String description) {
-        return userRepository.addServiceToUser(userRepository.findByEmail(email).getId(), serviceId, companyId, orderDate, description);
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public ServiceDto addServiceToUser(String email, Integer serviceId, Integer companyId, Date orderDate, String description) {
+        CompanyUser companyUser =
+                userRepository.addServiceToUser(findUserByEmail(email).getId(), companyId, serviceId, orderDate, description);
+        return new ServiceDto(serviceService.findServiceById(serviceId).getName(),
+                companyUser.getOrderDate(), companyUser.getDescription());
     }
 
     public List<ServiceDto> findUserServices(String email) {
         return userRepository.findUserServices(userRepository.findByEmail(email).getId());
+    }
+
+    public CompanyUser findUserCompanyUser(Integer id) {
+        return userRepository.findUserCompanyUser(id);
     }
 
 }

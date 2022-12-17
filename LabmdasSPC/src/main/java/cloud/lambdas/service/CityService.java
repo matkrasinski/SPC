@@ -1,8 +1,8 @@
 package cloud.lambdas.service;
 
-import cloud.lambdas.model.City;
-import cloud.lambdas.model.Company;
-import cloud.lambdas.model.Service;
+import cloud.lambdas.pojo.City;
+import cloud.lambdas.pojo.Company;
+import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.CityRepository;
 
 import java.util.List;
@@ -14,12 +14,17 @@ public class CityService {
         return cityRepository.getAllCities();
     }
 
-    public List<Company> getCompaniesInCity(String cityName) {
-        return cityRepository.getCompaniesByCity(cityName);
+
+
+
+
+
+    public City findCityById(Integer id) {
+        return cityRepository.findCityById(id);
     }
 
-    public List<Service> getServicesInCity(String cityName) {
-        return cityRepository.getServicesByCity(cityName);
+    public City findCityByName(String name) {
+        return cityRepository.findCityByName(name);
     }
 
 

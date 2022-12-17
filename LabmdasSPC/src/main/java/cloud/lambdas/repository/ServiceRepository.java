@@ -1,7 +1,7 @@
 package cloud.lambdas.repository;
 
 import cloud.lambdas.dbUtils.DatabaseConnection;
-import cloud.lambdas.model.Service;
+import cloud.lambdas.pojo.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,6 +73,23 @@ public class ServiceRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Service> getServicesByCity(String cityName) {
+        List<Service> services = new ArrayList<>();
+        try(Connection connection = this.databaseConnection.createConnection()) {
+            PreparedStatement selectStatement =
+                    connection.prepareStatement("SELECT * FROM Company co " +
+                            "JOIN City ci on co.city_id = ci.id WHERE ci.name = ?");
+            selectStatement.setString(1, cityName);
+            ResultSet rs = selectStatement.executeQuery();
+            while (rs.next()) {
+                services.add(new Service(rs.getInt("id"), rs.getString("name")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return services;
     }
 
 }

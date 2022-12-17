@@ -1,9 +1,12 @@
-package cloud.lambdas.model;
+package cloud.lambdas.pojo;
 
-public class Company {
+public class Service {
     private Integer id;
     private String name;
-    public Company(Integer id, String name) {
+
+    public Service() {}
+
+    public Service(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -2,7 +2,8 @@ package cloud.lambdas.repository;
 
 import cloud.lambdas.dbUtils.DatabaseConnection;
 import cloud.lambdas.dto.ServiceDto;
-import cloud.lambdas.model.User;
+import cloud.lambdas.pojo.CompanyUser;
+import cloud.lambdas.pojo.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -103,18 +104,19 @@ public class UserRepository {
 //        return s.isBlank() ? name + " = ?, " : "";
 //    }
 
-    public boolean addServiceToUser(Integer id, Integer serviceId, Integer companyId, Date orderDate, String description) {
+    public CompanyUser addServiceToUser(Integer userId, Integer serviceId, Integer companyId, Date orderDate, String description) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO " +
                             "CompanyUser(user_id, company_id, service_id, order_day, description)" +
                             " values (?, ?, ?, ?, ?)");
-            selectStatement.setInt(1, id);
+            selectStatement.setInt(1, userId);
             selectStatement.setInt(2, companyId);
             selectStatement.setInt(3, serviceId);
             selectStatement.setDate(4, orderDate);
             selectStatement.setString(5, description);
-            return !selectStatement.execute();
+            selectStatement.execute();
+            return new CompanyUser(userId, companyId, serviceId, orderDate, description);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -160,6 +162,27 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
         return user;
+    }
+
+    public CompanyUser findUserCompanyUser(Integer id) {
+        CompanyUser companyUser = new CompanyUser();
+        try(Connection connection = this.databaseConnection.createConnection()) {
+            PreparedStatement selectStatement = connection.prepareStatement("SELECT * from CompanyUser where user_id = ?");
+            selectStatement.setInt(1, id);
+            ResultSet rs = selectStatement.executeQuery();
+            if (rs.next())
+                companyUser = new CompanyUser(
+                        rs.getInt("id"),
+                        rs.getDate("order_day"),
+                        rs.getString("description"),
+                        rs.getInt("company_od"),
+                        rs.getInt("user_id"),
+                        rs.getInt("service_id")
+                );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return companyUser;
     }
 
 }

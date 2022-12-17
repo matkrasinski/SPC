@@ -1,6 +1,6 @@
 package cloud.lambdas.service;
 
-import cloud.lambdas.model.Service;
+import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.ServiceRepository;
 
 import java.util.List;
@@ -21,6 +21,9 @@ public class ServiceService {
         return serviceRepository.getAllServices();
     }
 
+    public List<Service> getServicesInCity(String cityName) {
+        return serviceRepository.getServicesByCity(cityName);
+    }
     public Service findServiceByName(String serviceName) {
         return serviceRepository.findServiceByName(serviceName);
     }

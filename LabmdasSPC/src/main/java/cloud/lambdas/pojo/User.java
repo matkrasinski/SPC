@@ -1,4 +1,4 @@
-package cloud.lambdas.model;
+package cloud.lambdas.pojo;
 
 public class User {
     private int id;
