@@ -9,11 +9,11 @@ public class ServiceService {
 
     ServiceRepository serviceRepository = new ServiceRepository();
 
-    public boolean addService(String name) {
-        return serviceRepository.addService(name);
+    public boolean addService(Service service) {
+        return serviceRepository.addService(service);
     }
 
-    public boolean deleteService(Integer id) {
+    public boolean deleteService(Long id) {
         return serviceRepository.deleteService(id);
     }
 
@@ -21,14 +21,14 @@ public class ServiceService {
         return serviceRepository.getAllServices();
     }
 
-    public List<Service> getServicesInCity(String cityName) {
-        return serviceRepository.getServicesByCity(cityName);
+    public List<Service> getServicesInCity(Long id) {
+        return serviceRepository.getServicesByCity(id);
     }
     public Service findServiceByName(String serviceName) {
         return serviceRepository.findServiceByName(serviceName);
     }
 
-    public Service findServiceById(Integer id) {
+    public Service findServiceById(Long id) {
         return serviceRepository.findServiceById(id);
     }
 

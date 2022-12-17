@@ -1,4 +1,4 @@
-package cloud.lambdas.handlers.getHandlers;
+package cloud.lambdas.handlers.dayHandlers;
 
 import cloud.lambdas.pojo.Day;
 import cloud.lambdas.service.CompanyService;
@@ -7,12 +7,12 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import java.util.List;
 
-public class GetCompanyForbiddenDaysHandler implements RequestHandler<String, List<Day>> {
+public class GetCompanyForbiddenDaysHandler implements RequestHandler<Long, List<Day>> {
     CompanyService companyService = new CompanyService();
 
     @Override
-    public List<Day> handleRequest(String companyName, Context context) {
-        return companyService.getCompanyForbiddenDays(companyName);
+    public List<Day> handleRequest(Long companyId, Context context) {
+        return companyService.getCompanyForbiddenDays(companyId);
     }
 
 

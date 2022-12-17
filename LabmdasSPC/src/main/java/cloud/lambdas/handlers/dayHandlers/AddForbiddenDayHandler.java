@@ -1,4 +1,4 @@
-package cloud.lambdas.handlers.addHandlers;
+package cloud.lambdas.handlers.dayHandlers;
 
 import cloud.lambdas.pojo.Day;
 import cloud.lambdas.service.CompanyService;
@@ -10,8 +10,7 @@ public class AddForbiddenDayHandler implements RequestHandler<Day, Day> {
 
     @Override
     public Day handleRequest(Day day, Context context) {
-        return companyService.addForbiddenDay(companyService.findCompanyById(day.getId()).getName(),
-                day.getForbiddenDay());
+        return companyService.addForbiddenDay(day);
     }
 
 }

@@ -1,13 +1,7 @@
 package cloud.lambdas.pojo;
 
 public class CompanyService {
-    private Integer id;
+    private Long companyId;
+    private Long serviceId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

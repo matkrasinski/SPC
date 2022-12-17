@@ -23,7 +23,8 @@ public class CityRepository {
                     connection.prepareStatement("SELECT * FROM City");
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                cities.add(new City(rs.getInt("id"), rs.getString("name")));
+                cities.add(new City(rs.getLong("id"),rs.getLong("companyId"),
+                        rs.getString("name")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -38,43 +39,46 @@ public class CityRepository {
             selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                city = new City(rs.getInt("id"), rs.getString("name"));
+                city = new City(rs.getLong("id"),rs.getLong("companyId"),
+                        rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return city;
     }
-    public City findCityById(Integer id) {
+    public City findCityById(Long id) {
         City city = new City();
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM City WHERE id = ?");
-            selectStatement.setInt(1, id);
+            selectStatement.setLong(1, id);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                city = new City(rs.getInt("id"), rs.getString("name"));
+                city = new City(rs.getLong("id"),rs.getLong("companyId"),
+                        rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return city;
     }
 
-    public boolean addCity(String name, Integer companyId) {
+    public boolean addCity(City city) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
-                    connection.prepareStatement("INSERT INTO City(name, company_id) values (?, ?)");
-            selectStatement.setString(1, name);
-            selectStatement.setInt(2, companyId);
+                    connection.prepareStatement("INSERT INTO City(name, company_id) values (?, ?, ?)");
+            selectStatement.setLong(1, city.getId());
+            selectStatement.setLong(2, city.getCompanyId());
+            selectStatement.setString(3, city.getName());
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean deleteUser(Integer cityId) {
+    public boolean deleteCity(Long cityId) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("DELETE from City where id = ?");
-            selectStatement.setInt(1, cityId);
+            selectStatement.setLong(1, cityId);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -1,4 +1,4 @@
-package cloud.lambdas.handlers.addHandlers;
+package cloud.lambdas.handlers.companyUserHandlers;
 
 import cloud.lambdas.dto.ServiceDto;
 import cloud.lambdas.pojo.CompanyUser;
@@ -11,7 +11,6 @@ public class AddServiceToUserHandler implements RequestHandler<CompanyUser, Serv
 
     @Override
     public ServiceDto handleRequest(CompanyUser companyUser, Context context) {
-        return userService.addServiceToUser(userService.findById(companyUser.getUserId()).getEmail(), companyUser.getCompanyId(),
-                companyUser.getServiceId(), companyUser.getOrderDate(), companyUser.getDescription());
+        return userService.addServiceToUser(companyUser);
     }
 }

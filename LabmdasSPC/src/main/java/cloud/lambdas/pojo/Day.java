@@ -4,7 +4,7 @@ package cloud.lambdas.pojo;
 import java.sql.Date;
 
 public class Day {
-    private Integer id;
+    private Long companyId;
     private Date forbiddenDay;
 
     public Day() {}
@@ -13,17 +13,17 @@ public class Day {
         this.forbiddenDay = forbiddenDay;
     }
 
-    public Day(Integer id, Date forbiddenDay) {
-        this.id = id;
+    public Day(Long id, Date forbiddenDay) {
+        this.companyId = id;
         this.forbiddenDay = forbiddenDay;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCompanyId(Long id) {
+        this.companyId = id;
     }
 
     public Date getForbiddenDay() {

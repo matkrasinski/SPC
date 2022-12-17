@@ -20,32 +20,32 @@ public class CompanyService {
         return companyRepository.findCompanyByName(name);
     }
 
-    public Company findCompanyById(Integer id) {
-        return companyRepository.findCompanyById(id);
+    public Company findCompanyById(Long companyId) {
+        return companyRepository.findCompanyById(companyId);
     }
-    public boolean addCompany(String companyName) {
-        return companyRepository.addCompany(companyName);
-    }
-
-    public boolean deleteCompany(String companyName) {
-        return companyRepository.deleteCompany(companyRepository.findCompanyByName(companyName).getId());
-    }
-    public List<Company> getCompaniesInCity(String cityName) {
-        return companyRepository.getCompaniesByCity(cityName);
-    }
-    public List<Service> getCompanyServices(String companyName) {
-        return companyRepository.getCompanyServices(companyRepository.findCompanyByName(companyName).getId());
+    public boolean addCompany(Company company) {
+        return companyRepository.addCompany(company);
     }
 
-    public boolean addCompanyService(String companyName, Integer serviceId) {
-        return companyRepository.addCompanyService(companyRepository.findCompanyByName(companyName).getId(), serviceId);
+    public boolean deleteCompany(Long companyId) {
+        return companyRepository.deleteCompany(companyId);
     }
-    public List<Day> getCompanyForbiddenDays(String companyName) {
-        return companyRepository.getCompanyForbiddenDays(companyRepository.findCompanyByName(companyName).getId());
+    public List<Company> getCompaniesInCity(Long cityId) {
+        return companyRepository.getCompaniesByCity(cityId);
+    }
+    public List<Service> getCompanyServices(Long companyId) {
+        return companyRepository.getCompanyServices(companyId);
     }
 
-    public Day addForbiddenDay(String companyName, Date date) {
-        return companyRepository.addCompanyForbiddenDays(companyRepository.findCompanyByName(companyName).getId(), date);
+    public boolean addCompanyService(Long companyId, Long serviceId) {
+        return companyRepository.addCompanyService(companyId, serviceId);
+    }
+    public List<Day> getCompanyForbiddenDays(Long companyId) {
+        return companyRepository.getCompanyForbiddenDays(companyId);
+    }
+
+    public Day addForbiddenDay(Day day) {
+        return companyRepository.addCompanyForbiddenDays(day);
     }
 
 }

@@ -5,18 +5,18 @@ import java.sql.Date;
 
 public class CompanyUser {
 
-    private Integer id;
+    private Long id;
     private Date orderDate;
     private String description;
 
-    private Integer companyId;
-    private Integer userId;
+    private Long companyId;
+    private Long userId;
 
-    private Integer serviceId;
+    private Long serviceId;
 
     public CompanyUser() {}
 
-    public CompanyUser(Integer id, Date orderDate, String description, Integer companyId, Integer userId, Integer serviceId) {
+    public CompanyUser(Long id, Date orderDate, String description, Long companyId, Long userId, Long serviceId) {
         this.id = id;
         this.orderDate = orderDate;
         this.description = description;
@@ -25,7 +25,7 @@ public class CompanyUser {
         this.serviceId = serviceId;
     }
 
-    public CompanyUser(Integer userId, Integer companyId, Integer serviceId, Date orderDate, String description) {
+    public CompanyUser(Long userId, Long companyId, Long serviceId, Date orderDate, String description) {
         this.orderDate = orderDate;
         this.description = description;
         this.companyId = companyId;
@@ -33,11 +33,11 @@ public class CompanyUser {
         this.serviceId = serviceId;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,27 +57,27 @@ public class CompanyUser {
         this.description = description;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getServiceId() {
+    public Long getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Integer serviceId) {
+    public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
     }
 }
