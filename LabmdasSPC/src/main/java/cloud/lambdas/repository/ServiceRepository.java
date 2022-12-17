@@ -75,13 +75,16 @@ public class ServiceRepository {
         }
     }
 
-    public List<Service> getServicesByCity(Long id) {
+    public List<Service> getServicesByCity(String name) {
         List<Service> services = new ArrayList<>();
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
-                    connection.prepareStatement("SELECT * FROM Company co " +
-                            "JOIN City ci on co.city_id = ci.id WHERE ci.id = ?");
-            selectStatement.setLong(1, id);
+                    connection.prepareStatement("Select s.id, s.name from Service s " +
+                            "join CompanyService cs on cs.service_id = s.id " +
+                            "join Company c on c.id = cs.company_id " +
+                            "join City ci " +
+                            "where ci.name = ? ");
+            selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
                 services.add(new Service(rs.getLong("id"), rs.getString("name")));

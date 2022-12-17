@@ -23,7 +23,7 @@ public class CityRepository {
                     connection.prepareStatement("SELECT * FROM City");
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                cities.add(new City(rs.getLong("id"),rs.getLong("companyId"),
+                cities.add(new City(rs.getLong("company_id"),
                         rs.getString("name")));
             }
         } catch (SQLException e) {
@@ -39,7 +39,7 @@ public class CityRepository {
             selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                city = new City(rs.getLong("id"),rs.getLong("companyId"),
+                city = new City(rs.getLong("company_id"),
                         rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -53,7 +53,7 @@ public class CityRepository {
             selectStatement.setLong(1, id);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                city = new City(rs.getLong("id"),rs.getLong("companyId"),
+                city = new City(rs.getLong("company_id"),
                         rs.getString("name"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
