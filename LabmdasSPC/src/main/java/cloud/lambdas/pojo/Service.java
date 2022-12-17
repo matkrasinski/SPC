@@ -1,21 +1,21 @@
 package cloud.lambdas.pojo;
 
 public class Service {
-    private Integer id;
+    private Long id;
     private String name;
 
     public Service() {}
 
-    public Service(Integer id, String name) {
+    public Service(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

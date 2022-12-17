@@ -18,15 +18,15 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
-    public boolean addUser(String firstName, String lastName, String email, String password, Boolean isAdmin) {
-        return userRepository.addUser(firstName, lastName, email, password, isAdmin);
+    public boolean addUser(User user) {
+        return userRepository.addUser(user);
     }
 
-    public boolean deleteUser(Integer userId) {
+    public boolean deleteUser(Long userId) {
         return userRepository.deleteUser(userId);
     }
 
-    public User findById(Integer id) {
+    public User findUserById(Long id) {
         return userRepository.findUserById(id);
     }
 
@@ -34,18 +34,17 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public ServiceDto addServiceToUser(String email, Integer serviceId, Integer companyId, Date orderDate, String description) {
-        CompanyUser companyUser =
-                userRepository.addServiceToUser(findUserByEmail(email).getId(), companyId, serviceId, orderDate, description);
-        return new ServiceDto(serviceService.findServiceById(serviceId).getName(),
+    public ServiceDto addServiceToUser(CompanyUser companyUser) {
+        userRepository.addServiceToUser(companyUser);
+             return new ServiceDto(serviceService.findServiceById(companyUser.getServiceId()).getName(),
                 companyUser.getOrderDate(), companyUser.getDescription());
     }
 
-    public List<ServiceDto> findUserServices(String email) {
-        return userRepository.findUserServices(userRepository.findByEmail(email).getId());
+    public List<ServiceDto> findUserServices(Long id) {
+        return userRepository.findUserServices(id);
     }
 
-    public CompanyUser findUserCompanyUser(Integer id) {
+    public CompanyUser findCompanyUserById(Long id) {
         return userRepository.findUserCompanyUser(id);
     }
 

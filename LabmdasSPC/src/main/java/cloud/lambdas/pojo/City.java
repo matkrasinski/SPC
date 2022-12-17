@@ -1,23 +1,25 @@
 package cloud.lambdas.pojo;
 
 public class City {
-    private int id;
+    private Long id;
+    private Long companyId;
     private String name;
 
-    private int companyId;
 
-    public City() {}
-
-    public City(int id, String name) {
+    public City(Long id, Long companyId, String name) {
         this.id = id;
+        this.companyId = companyId;
         this.name = name;
     }
 
-    public int getId() {
+    public City() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -27,5 +29,13 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }

@@ -16,10 +16,7 @@ public class CityService {
 
 
 
-
-
-
-    public City findCityById(Integer id) {
+    public City findCityById(Long id) {
         return cityRepository.findCityById(id);
     }
 
@@ -28,12 +25,12 @@ public class CityService {
     }
 
 
-    public boolean addCity(String cityName, Integer companyId) {
-        return cityRepository.addCity(cityName, companyId);
+    public boolean addCity(City city) {
+        return cityRepository.addCity(city);
     }
 
-    public boolean deleteCity(Integer cityId) {
-        return cityRepository.deleteUser(cityId);
+    public boolean deleteCity(Long cityId) {
+        return cityRepository.deleteCity(cityId);
     }
 
 }

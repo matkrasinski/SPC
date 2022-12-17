@@ -1,7 +1,7 @@
 package cloud.lambdas.pojo;
 
 public class User {
-    private int id;
+    private Long id;
     private String firstName;
 
     private String lastName;
@@ -14,7 +14,7 @@ public class User {
 
     public User() {}
 
-    public User(int id, String firstName, String lastName, String email, String hashedPassword, boolean isAdmin) {
+    public User(Long id, String firstName, String lastName, String email, String hashedPassword, boolean isAdmin) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,11 +23,11 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
