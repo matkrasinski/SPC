@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CompanyService {
 
-    CompanyRepository companyRepository = new CompanyRepository();
+    private final CompanyRepository companyRepository = new CompanyRepository();
 
     public List<Company> getAllCompanies() {
         return companyRepository.getAllCompanies();

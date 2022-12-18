@@ -61,6 +61,23 @@ public class CityRepository {
         return city;
     }
 
+    public List<City> getCitiesByCompany(Long companyId) {
+        List<City> cities = new ArrayList<>();
+        try(Connection connection = this.databaseConnection.createConnection()) {
+            PreparedStatement selectStatement =
+                    connection.prepareStatement("SELECT * FROM City WHERE company_id = ?");
+            selectStatement.setLong(1, companyId);
+            ResultSet rs = selectStatement.executeQuery();
+            while (rs.next()) {
+                cities.add(new City(rs.getLong("company_id"),
+                        rs.getString("name")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cities;
+    }
+
     public boolean addCity(String cityName, Long companyId) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =

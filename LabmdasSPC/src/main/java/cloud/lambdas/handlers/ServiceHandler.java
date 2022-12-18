@@ -1,8 +1,10 @@
 package cloud.lambdas.handlers;
 
 import cloud.lambdas.dto.CompanyServiceDto;
+import cloud.lambdas.dto.Mapper;
 import cloud.lambdas.pojo.Company;
 import cloud.lambdas.pojo.Service;
+import cloud.lambdas.service.CityService;
 import cloud.lambdas.service.CompanyService;
 import cloud.lambdas.service.ServiceService;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -13,12 +15,15 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServiceHandler {
     private final ServiceService serviceService = new ServiceService();
     private final CompanyService companyService = new CompanyService();
-
+    private final CityService cityService = new CityService();
     private final Gson gson = new Gson();
+
+    private final Mapper mapper = new Mapper();
 
     public List<Service> handleGetAllServicesRequest(Void unused, Context context) {
         return serviceService.getAllServices();
@@ -130,6 +135,8 @@ public class ServiceHandler {
                 responseObject.put("statusCode", 200);
                 companyServiceDto.setCompanyId(id);
                 companyServiceDto.setCompanyName(companyService.findCompanyById(id).getName());
+                companyServiceDto.setCities(cityService.getCitiesByCompany(id).stream().map(mapper::mapCity).collect(Collectors.toList()));
+                companyServiceDto.setForbiddenDays(companyService.getCompanyForbiddenDays(id));
                 companyServiceDto.setServices(services);
             } else {
                 responseBody.put("message", "No items found");

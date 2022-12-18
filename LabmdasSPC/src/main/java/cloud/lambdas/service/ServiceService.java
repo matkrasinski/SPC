@@ -1,17 +1,22 @@
 package cloud.lambdas.service;
 
 import cloud.lambdas.dto.CompanyServiceDto;
+import cloud.lambdas.dto.Mapper;
 import cloud.lambdas.pojo.Company;
 import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.ServiceRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServiceService {
 
-    ServiceRepository serviceRepository = new ServiceRepository();
-    CompanyService companyService = new CompanyService();
+    private final ServiceRepository serviceRepository = new ServiceRepository();
+    private final CompanyService companyService = new CompanyService();
+    private final CityService cityService = new CityService();
+
+    private final Mapper mapper = new Mapper();
 
     public boolean addService(String serviceName) {
         return serviceRepository.addService(serviceName);
@@ -39,7 +44,10 @@ public class ServiceService {
     public List<CompanyServiceDto> getAllCompanyServices() {
         List<CompanyServiceDto> companyServices = new ArrayList<>();
         for (Company c : companyService.getAllCompanies())
-            companyServices.add(new CompanyServiceDto(c.getId(), c.getName(), companyService.getCompanyServices(c.getId())));
+            companyServices.add(new CompanyServiceDto(c.getId(), c.getName(),
+                    companyService.getCompanyServices(c.getId()),
+                    companyService.getCompanyForbiddenDays(c.getId()),
+                    cityService.getCitiesByCompany(c.getId()).stream().map(mapper::mapCity).collect(Collectors.toList())));
         return companyServices;
     }
 

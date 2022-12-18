@@ -8,13 +8,15 @@ import cloud.lambdas.repository.CityRepository;
 import java.util.List;
 
 public class CityService {
-    CityRepository cityRepository = new CityRepository();
+    private final CityRepository cityRepository = new CityRepository();
 
     public List<City> getAllCities() {
         return cityRepository.getAllCities();
     }
 
-
+    public List<City> getCitiesByCompany(Long companyId) {
+        return cityRepository.getCitiesByCompany(companyId);
+    }
 
     public City findCityById(Long id) {
         return cityRepository.findCityById(id);

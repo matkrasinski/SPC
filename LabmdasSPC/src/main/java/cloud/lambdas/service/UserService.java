@@ -11,9 +11,9 @@ import java.util.List;
 
 public class UserService {
 
-    UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
 
-    ServiceService serviceService = new ServiceService();
+    private final ServiceService serviceService = new ServiceService();
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
