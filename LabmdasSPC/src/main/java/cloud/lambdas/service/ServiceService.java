@@ -38,9 +38,8 @@ public class ServiceService {
 
     public List<CompanyServiceDto> getAllCompanyServices() {
         List<CompanyServiceDto> companyServices = new ArrayList<>();
-        for (Company c : companyService.getAllCompanies()) {
-            companyServices.add(new CompanyServiceDto(c.getId(), companyService.getCompanyServices(c.getId())));
-        }
+        for (Company c : companyService.getAllCompanies())
+            companyServices.add(new CompanyServiceDto(c.getId(), c.getName(), companyService.getCompanyServices(c.getId())));
         return companyServices;
     }
 

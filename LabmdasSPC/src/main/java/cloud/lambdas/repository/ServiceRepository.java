@@ -82,7 +82,7 @@ public class ServiceRepository {
                     connection.prepareStatement("Select s.id, s.name from Service s " +
                             "join CompanyService cs on cs.service_id = s.id " +
                             "join Company c on c.id = cs.company_id " +
-                            "join City ci " +
+                            "join City ci on ci.company_id = c.id " +
                             "where ci.name = ? ");
             selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();

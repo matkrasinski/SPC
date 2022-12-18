@@ -7,13 +7,16 @@ import java.util.List;
 public class CompanyServiceDto {
 
     private Long companyId;
+    private String companyName;
     private List<Service> services;
+
 
     public CompanyServiceDto() {}
 
-    public CompanyServiceDto(Long companyId, List<Service> services) {
+    public CompanyServiceDto(Long companyId, String companyName, List<Service> services) {
         this.companyId = companyId;
         this.services = services;
+        this.companyName = companyName;
     }
 
     public Long getCompanyId() {
@@ -30,5 +33,13 @@ public class CompanyServiceDto {
 
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
