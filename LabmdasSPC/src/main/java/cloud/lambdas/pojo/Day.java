@@ -13,8 +13,8 @@ public class Day {
         this.forbiddenDay = forbiddenDay;
     }
 
-    public Day(Long id, Date forbiddenDay) {
-        this.companyId = id;
+    public Day(Long companyId, Date forbiddenDay) {
+        this.companyId = companyId;
         this.forbiddenDay = forbiddenDay;
     }
 

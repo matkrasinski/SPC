@@ -1,11 +1,13 @@
 package cloud.lambdas.repository;
 
 import cloud.lambdas.dbUtils.DatabaseConnection;
-import cloud.lambdas.dto.ServiceDto;
 import cloud.lambdas.pojo.CompanyUser;
 import cloud.lambdas.pojo.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,27 +126,27 @@ public class UserRepository {
     }
 
 
-    public List<ServiceDto> findUserServices(Long id) {
-        List<ServiceDto> services = new ArrayList<>();
-        try(Connection connection = this.databaseConnection.createConnection()) {
-            PreparedStatement selectStatement = connection.prepareStatement("SELECT order_day, description, name " +
-                    "FROM CompanyUser cu " +
-                    "JOIN Service s on s.id = cu.service_id " +
-                    "WHERE cu.user_id = ?");
-            selectStatement.setLong(1, id);
-            ResultSet rs = selectStatement.executeQuery();
-            while (rs.next()) {
-                services.add(new ServiceDto(
-                        rs.getString("name"),
-                        rs.getDate("order_day"),
-                        rs.getString("description")
-                ));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return services;
-    }
+//    public List<ServiceDto> findUserServices(Long id) {
+//        List<ServiceDto> services = new ArrayList<>();
+//        try(Connection connection = this.databaseConnection.createConnection()) {
+//            PreparedStatement selectStatement = connection.prepareStatement("SELECT order_day, description, name " +
+//                    "FROM CompanyUser cu " +
+//                    "JOIN Service s on s.id = cu.service_id " +
+//                    "WHERE cu.user_id = ?");
+//            selectStatement.setLong(1, id);
+//            ResultSet rs = selectStatement.executeQuery();
+//            while (rs.next()) {
+//                services.add(new ServiceDto(
+//                        rs.getString("name"),
+//                        rs.getDate("order_day"),
+//                        rs.getString("description")
+//                ));
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return services;
+//    }
 
     public User findByEmail(String email) {
         User user = new User();

@@ -2,7 +2,7 @@ package cloud.lambdas.handlers;
 
 import cloud.lambdas.dto.CompanyServiceDto;
 import cloud.lambdas.dto.Mapper;
-import cloud.lambdas.pojo.Company;
+import cloud.lambdas.dto.ServiceDto;
 import cloud.lambdas.pojo.Service;
 import cloud.lambdas.service.CityService;
 import cloud.lambdas.service.CompanyService;
@@ -14,12 +14,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
+@SuppressWarnings({"unchecked", "Duplicates", "MismatchedQueryAndUpdateOfCollection", "unused"})
 public class ServiceHandler {
     private final ServiceService serviceService = new ServiceService();
     private final CompanyService companyService = new CompanyService();
+
     private final CityService cityService = new CityService();
     private final Gson gson = new Gson();
 
@@ -33,7 +36,7 @@ public class ServiceHandler {
         return serviceService.findServiceByName(s);
     }
 
-    public void handleGetServicesInCity(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+    public void handleGetServicesInCity(InputStream inputStream, OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         JSONParser parser = new JSONParser();
@@ -45,9 +48,9 @@ public class ServiceHandler {
             JSONObject reqObject = (JSONObject) parser.parse(reader);
             if (reqObject.get("queryStringParameters") != null) {
                 JSONObject qps = (JSONObject) reqObject.get("queryStringParameters");
-                if (qps.get("cityName") != null) {
-                    String cityName  = (String) qps.get("cityName");
-                    services = serviceService.getServicesInCity(cityName);
+                if (qps.get("id") != null) {
+                    Long id = (long) Integer.parseInt((String) qps.get("id"));
+                    services = serviceService.getServicesInCity(id);
                 }
             } else {
                 responseBody.put("message", "Bad request");
@@ -63,14 +66,15 @@ public class ServiceHandler {
 
             responseObject.put("body", gson.toJson(services));
         } catch (ParseException | IOException e) {
-            context.getLogger().log("ERROR : " + e.getMessage());
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
         }
         writer.write(responseObject.toString());
         reader.close();
         writer.close();
     }
 
-    public void handleFindServiceById(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+    public void handleFindServiceById(InputStream inputStream, OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         JSONParser parser = new JSONParser();
@@ -80,8 +84,8 @@ public class ServiceHandler {
         Service service = null;
         try {
             JSONObject reqObject = (JSONObject) parser.parse(reader);
-            if (reqObject.get("queryStringParameters") != null) {
-                JSONObject qps = (JSONObject) reqObject.get("queryStringParameters");
+            if (reqObject.get("pathParameters") != null) {
+                JSONObject qps = (JSONObject) reqObject.get("pathParameters");
                 if (qps.get("id") != null) {
                     Long id = (long) Integer.parseInt((String) qps.get("id"));
                     service = serviceService.findServiceById(id);
@@ -99,31 +103,38 @@ public class ServiceHandler {
                 responseObject.put("statusCode", 404);
             }
 
+            Map<String, Object> headers = new HashMap<>();
+
+            headers.put("Context-type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+
             responseObject.put("body", gson.toJson(service));
+            responseObject.put("headers", headers);
         } catch (ParseException e) {
-            context.getLogger().log("ERROR : " + e.getMessage());
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
         }
         writer.write(responseObject.toString());
         reader.close();
         writer.close();
     }
 
-    public void handleGetCompanyServicesRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+    public void handleGetCompanyServicesRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         JSONParser parser = new JSONParser();
         JSONObject responseObject = new JSONObject();
         JSONObject responseBody = new JSONObject();
         Long id = null;
-        List<Service> services = null;
+        List<ServiceDto> services = null;
         CompanyServiceDto companyServiceDto = new CompanyServiceDto();
         try {
             JSONObject reqObject = (JSONObject) parser.parse(reader);
-             if (reqObject.get("queryStringParameters") != null) {
-                JSONObject qps = (JSONObject) reqObject.get("queryStringParameters");
-                if (qps.get("companyId") != null) {
-                    id  = (long) Integer.parseInt((String) qps.get("companyId"));
-                    services = companyService.getCompanyServices(id);
+             if (reqObject.get("pathParameters") != null) {
+                JSONObject qps = (JSONObject) reqObject.get("pathParameters");
+                if (qps.get("id") != null) {
+                    id  = (long) Integer.parseInt((String) qps.get("id"));
+                    services = companyService.getCompanyServicesDto(id);
                 }
             } else {
                  responseBody.put("message", "Bad request");
@@ -133,19 +144,22 @@ public class ServiceHandler {
             if (services != null) {
                 responseBody.put("services", services);
                 responseObject.put("statusCode", 200);
-                companyServiceDto.setCompanyId(id);
                 companyServiceDto.setCompanyName(companyService.findCompanyById(id).getName());
-                companyServiceDto.setCities(cityService.getCitiesByCompany(id).stream().map(mapper::mapCity).collect(Collectors.toList()));
-                companyServiceDto.setForbiddenDays(companyService.getCompanyForbiddenDays(id));
                 companyServiceDto.setServices(services);
             } else {
                 responseBody.put("message", "No items found");
                 responseObject.put("statusCode", 404);
             }
+            Map<String, Object> headers = new HashMap<>();
+
+            headers.put("Context-type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
 
             responseObject.put("body", gson.toJson(companyServiceDto));
+            responseObject.put("headers", headers);
         } catch (ParseException | IOException e) {
-            context.getLogger().log("ERROR : " + e.getMessage());
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
         }
         writer.write(responseObject.toString());
         reader.close();
@@ -155,9 +169,81 @@ public class ServiceHandler {
     public List<CompanyServiceDto> handleGetAllCompaniesServicesRequest() {
         return serviceService.getAllCompanyServices();
     }
-
-    public Boolean handleAddServiceRequest(Service service, Context context) {
-        return serviceService.addService(service.getName());
-
+    public void handleAddServiceRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        JSONParser parser = new JSONParser();
+        JSONObject responseObject = new JSONObject();
+        JSONObject responseBody = new JSONObject();
+        try {
+            JSONObject reqObject = (JSONObject) parser.parse(reader);
+            if (reqObject.get("body") != null) {
+                JSONObject object = (JSONObject) parser.parse((String) reqObject.get("body"));
+                serviceService.addService((String) object.get("name"),
+                        (Double) object.get("price"));
+            }
+            responseBody.put("message", "Service added");
+            responseObject.put("statusCode", 200);
+            responseObject.put("body", responseBody.toString());
+        } catch (ParseException | IOException e) {
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
+        }
+        writer.write(responseObject.toString());
+        reader.close();
+        writer.close();
     }
+
+    public void handleDeleteServiceRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        JSONParser parser = new JSONParser();
+        JSONObject responseObject = new JSONObject();
+        JSONObject responseBody = new JSONObject();
+        try {
+            JSONObject reqObject = (JSONObject) parser.parse(reader);
+            if (reqObject.get("pathParameters") != null) {
+                JSONObject qps = (JSONObject) reqObject.get("pathParameters");
+                if (qps.get("id") != null) {
+                    serviceService.deleteService((long) Integer.parseInt((String) qps.get("id")));
+                }
+            }
+            responseBody.put("message", "Service deleted");
+            responseObject.put("statusCode", 200);
+            responseObject.put("body", responseBody.toString());
+        } catch (ParseException | IOException e) {
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
+        }
+        writer.write(responseObject.toString());
+        reader.close();
+        writer.close();
+    }
+
+    // TO DO
+//    public void handleUpdateServiceRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+//        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//        JSONParser parser = new JSONParser();
+//        JSONObject responseObject = new JSONObject();
+//        JSONObject responseBody = new JSONObject();
+//        try {
+//            JSONObject reqObject = (JSONObject) parser.parse(reader);
+//            if (reqObject.get("body") != null) {
+//                Service service = new Service((String) ((JSONObject) parser.parse(
+//                        (String) reqObject.get("body"))).get("name"));
+//                serviceService.addService(service.getName());
+//            }
+//            responseBody.put("message", "Service added");
+//            responseObject.put("statusCode", 200);
+//            responseObject.put("body", responseBody.toString());
+//        } catch (ParseException | IOException e) {
+//            responseObject.put("statusCode", 400);
+//            responseObject.put("error", e);
+//        }
+//        writer.write(responseObject.toString());
+//        reader.close();
+//        writer.close();
+//    }
+
 }

@@ -4,11 +4,18 @@ public class Service {
     private Long id;
     private String name;
 
+    private Double price;
     public Service() {}
 
-    public Service(Long id, String name) {
+    public Service(Long id, String name, Double price) {
         this.id = id;
         this.name = name;
+        this.price = price;
+    }
+
+    public Service(String name, Double price) {
+        this.name = name;
+        this.price = price;
     }
 
     public Long getId() {
@@ -25,5 +32,13 @@ public class Service {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

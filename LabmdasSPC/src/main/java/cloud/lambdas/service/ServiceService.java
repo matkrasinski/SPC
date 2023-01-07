@@ -2,13 +2,11 @@ package cloud.lambdas.service;
 
 import cloud.lambdas.dto.CompanyServiceDto;
 import cloud.lambdas.dto.Mapper;
-import cloud.lambdas.pojo.Company;
 import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.ServiceRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ServiceService {
 
@@ -18,8 +16,8 @@ public class ServiceService {
 
     private final Mapper mapper = new Mapper();
 
-    public boolean addService(String serviceName) {
-        return serviceRepository.addService(serviceName);
+    public boolean addService(String serviceName, Double price) {
+        return serviceRepository.addService(serviceName, price);
     }
 
     public boolean deleteService(Long id) {
@@ -30,8 +28,8 @@ public class ServiceService {
         return serviceRepository.getAllServices();
     }
 
-    public List<Service> getServicesInCity(String name) {
-        return serviceRepository.getServicesByCity(name);
+    public List<Service> getServicesInCity(Long id) {
+        return serviceRepository.getServicesByCity(id);
     }
     public Service findServiceByName(String serviceName) {
         return serviceRepository.findServiceByName(serviceName);
@@ -43,11 +41,9 @@ public class ServiceService {
 
     public List<CompanyServiceDto> getAllCompanyServices() {
         List<CompanyServiceDto> companyServices = new ArrayList<>();
-        for (Company c : companyService.getAllCompanies())
-            companyServices.add(new CompanyServiceDto(c.getId(), c.getName(),
-                    companyService.getCompanyServices(c.getId()),
-                    companyService.getCompanyForbiddenDays(c.getId()),
-                    cityService.getCitiesByCompany(c.getId()).stream().map(mapper::mapCity).collect(Collectors.toList())));
+        companyService.getAllCompanies().forEach(c -> {
+            companyServices.add(new CompanyServiceDto(c.getName(), companyService.getCompanyServicesDto(c.getId())));
+        });
         return companyServices;
     }
 

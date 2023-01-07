@@ -19,7 +19,9 @@ public class ServiceRepository {
                     connection.prepareStatement("SELECT * FROM Service");
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                services.add(new Service(rs.getLong("id"), rs.getString("name")));
+                services.add(new Service(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -33,7 +35,9 @@ public class ServiceRepository {
             PreparedStatement selectStatement = connection.prepareStatement("SELECT * from Service where id = " + id);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                service = new Service(rs.getLong("id"), rs.getString("name"));
+                service = new Service(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -47,7 +51,9 @@ public class ServiceRepository {
             selectStatement.setString(1, name);
             ResultSet rs = selectStatement.executeQuery();
             if (rs.next())
-                service = new Service(rs.getLong("id"), rs.getString("name"));
+                service = new Service(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,35 +70,37 @@ public class ServiceRepository {
         }
     }
 
-    public boolean addService(String serviceName) {
+    public boolean addService(String serviceName, Double price) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
-                    connection.prepareStatement("INSERT INTO Service(name) values (?)");
+                    connection.prepareStatement("INSERT INTO Service(name, price) values (?, ?)");
             selectStatement.setString(1, serviceName);
+            selectStatement.setDouble(2, price);
             return !selectStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Service> getServicesByCity(String name) {
+    public List<Service> getServicesByCity(Long id) {
         List<Service> services = new ArrayList<>();
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
-                    connection.prepareStatement("Select s.id, s.name from Service s " +
+                    connection.prepareStatement("Select s.id, s.name, price from Service s " +
                             "join CompanyService cs on cs.service_id = s.id " +
                             "join Company c on c.id = cs.company_id " +
                             "join City ci on ci.company_id = c.id " +
-                            "where ci.name = ? ");
-            selectStatement.setString(1, name);
+                            "where ci.id = ? ");
+            selectStatement.setLong(1, id);
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                services.add(new Service(rs.getLong("id"), rs.getString("name")));
+                services.add(new Service(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return services;
     }
-
 }

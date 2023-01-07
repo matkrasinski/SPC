@@ -1,19 +1,35 @@
 package cloud.lambdas.dto;
 
 
-import java.sql.Date;
-
 public class ServiceDto {
+
+    private Integer amount;
+
+    private Long serviceId;
     private String name;
-    private Date order_date;
-    private String description;
+    private Double price;
 
-    public ServiceDto() {}
-
-    public ServiceDto(String name, Date order_date, String description) {
+    public ServiceDto(Integer amount, Long serviceId, String name, Double price) {
+        this.amount = amount;
+        this.serviceId = serviceId;
         this.name = name;
-        this.order_date = order_date;
-        this.description = description;
+        this.price = price;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public String getName() {
@@ -24,19 +40,11 @@ public class ServiceDto {
         this.name = name;
     }
 
-    public Date getOrder_date() {
-        return order_date;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setOrder_date(Date order_date) {
-        this.order_date = order_date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
