@@ -27,7 +27,7 @@ public class DayHandler {
             if (reqObject.get("body") != null) {
                 JSONObject object = (JSONObject) parser.parse((String) reqObject.get("body"));
 
-                companyService.addForbiddenDay(new Day((Long) object.get("companyId"), (Date) object.get("day")));
+                companyService.addForbiddenDay((Long) object.get("companyId"), (String) object.get("day"));
             }
             responseBody.put("message", "Forbidden day added");
             responseObject.put("statusCode", 200);

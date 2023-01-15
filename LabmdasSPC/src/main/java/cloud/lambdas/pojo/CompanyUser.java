@@ -6,31 +6,34 @@ import java.sql.Date;
 public class CompanyUser {
 
     private Long id;
-    private Date orderDate;
     private String description;
 
     private Long companyId;
     private Long userId;
 
     private Long serviceId;
+    private String orderDate;
+    private Long cityId;
 
     public CompanyUser() {}
 
-    public CompanyUser(Long id, Date orderDate, String description, Long companyId, Long userId, Long serviceId) {
+    public CompanyUser(Long id, String orderDate, String description, Long companyId, Long userId, Long serviceId, Long cityId) {
         this.id = id;
         this.orderDate = orderDate;
         this.description = description;
         this.companyId = companyId;
         this.userId = userId;
         this.serviceId = serviceId;
+        this.cityId = cityId;
     }
 
-    public CompanyUser(Long userId, Long companyId, Long serviceId, Date orderDate, String description) {
-        this.orderDate = orderDate;
+    public CompanyUser(Long userId, Long companyId, String date, Long serviceId, String description, Long cityId) {
+        this.orderDate = date;
         this.description = description;
         this.companyId = companyId;
         this.userId = userId;
         this.serviceId = serviceId;
+        this.cityId = cityId;
     }
 
     public Long getId() {
@@ -41,11 +44,11 @@ public class CompanyUser {
         this.id = id;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -79,6 +82,14 @@ public class CompanyUser {
 
     public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 }
 

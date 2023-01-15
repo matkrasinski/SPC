@@ -8,6 +8,7 @@ import cloud.lambdas.pojo.Day;
 import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.CompanyRepository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,8 +53,8 @@ public class CompanyService {
         return companyRepository.getCompanyForbiddenDays(companyId);
     }
 
-    public Day addForbiddenDay(Day day) {
-        return companyRepository.addCompanyForbiddenDays(day);
+    public Day addForbiddenDay(Long companyId, String date) {
+        return companyRepository.addCompanyForbiddenDays(companyId, date);
     }
 
     public boolean deleteForbiddenDay(Long id) {

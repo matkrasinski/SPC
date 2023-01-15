@@ -140,16 +140,16 @@ public class CompanyRepository {
         }
     }
 
-    public Day addCompanyForbiddenDays(Day day) {
+    public Day addCompanyForbiddenDays(Long companyId, String date) {
         try(Connection connection = this.databaseConnection.createConnection()) {
             PreparedStatement selectStatement =
                     connection.prepareStatement("INSERT INTO " +
                             "Day(company_id, forbidden_day)" +
                             " values (?, ?)");
-            selectStatement.setLong(1, day.getCompanyId());
-            selectStatement.setDate(2, (Date) day.getForbiddenDay());
+            selectStatement.setLong(1, companyId );
+            selectStatement.setDate(2, Date.valueOf(date));
             selectStatement.execute();
-            return new Day(day.getCompanyId(), day.getForbiddenDay());
+            return new Day(companyId, Date.valueOf(date));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

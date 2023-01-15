@@ -1,5 +1,8 @@
 package cloud.lambdas.service;
 
+import cloud.lambdas.dto.ServiceDto;
+import cloud.lambdas.dto.ServiceUserDto;
+import cloud.lambdas.pojo.CompanyService;
 import cloud.lambdas.pojo.CompanyUser;
 import cloud.lambdas.pojo.User;
 import cloud.lambdas.repository.UserRepository;
@@ -15,31 +18,29 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
-    public boolean addUser(String firstName, String lastName, String email, String password, Boolean isAdmin) {
-        return userRepository.addUser(firstName, lastName, email, password, isAdmin);
+    public boolean addUser(String uuid) {
+        return userRepository.addUser(uuid);
     }
 
     public boolean deleteUser(Long userId) {
         return userRepository.deleteUser(userId);
     }
 
-    public User findUserById(Long id) {
-        return userRepository.findUserById(id);
+    public User findUserByUuid(String uuid) {
+        return userRepository.findUserByUuid(uuid);
     }
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-//    public ServiceDto addServiceToUser(CompanyUser companyUser) {
-//        userRepository.addServiceToUser(companyUser);
-//             return new ServiceDto(serviceService.findServiceById(companyUser.getServiceId()).getName(),
-//                companyUser.getOrderDate(), companyUser.getDescription());
-//    }
+    public CompanyUser addServiceToUser(CompanyUser companyUser) {
+        return userRepository.addServiceToUser(companyUser);
+    }
 
-//    public List<ServiceDto> findUserServices(Long id) {
-//        return userRepository.findUserServices(id);
-//    }
+    public List<ServiceUserDto> findUserServices(String uuid) {
+        return userRepository.findUserServices(uuid);
+    }
 
     public CompanyUser findCompanyUserById(Long id) {
         return userRepository.findUserCompanyUser(id);
