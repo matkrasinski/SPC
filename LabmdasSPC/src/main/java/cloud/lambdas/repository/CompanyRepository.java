@@ -4,7 +4,6 @@ import cloud.lambdas.dbUtils.DatabaseConnection;
 import cloud.lambdas.dto.ServiceDto;
 import cloud.lambdas.pojo.City;
 import cloud.lambdas.pojo.Company;
-import cloud.lambdas.pojo.Day;
 import cloud.lambdas.pojo.Service;
 
 import java.sql.*;
@@ -140,47 +139,7 @@ public class CompanyRepository {
         }
     }
 
-    public Day addCompanyForbiddenDays(Long companyId, String date) {
-        try(Connection connection = this.databaseConnection.createConnection()) {
-            PreparedStatement selectStatement =
-                    connection.prepareStatement("INSERT INTO " +
-                            "Day(company_id, forbidden_day)" +
-                            " values (?, ?)");
-            selectStatement.setLong(1, companyId );
-            selectStatement.setDate(2, Date.valueOf(date));
-            selectStatement.execute();
-            return new Day(companyId, Date.valueOf(date));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public boolean deleteCompanyForbiddenDay(Long dayId) {
-        try(Connection connection = this.databaseConnection.createConnection()) {
-            PreparedStatement selectStatement =
-                    connection.prepareStatement("DELETE from Day where id = ?");
-            selectStatement.setLong(1, dayId);
-            return !selectStatement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<Day> getCompanyForbiddenDays(Long companyId) {
-        List<Day> days = new ArrayList<>();
-        try(Connection connection = this.databaseConnection.createConnection()) {
-            PreparedStatement selectStatement =
-                    connection.prepareStatement("SELECT * FROM Day WHERE company_id = ?");
-            selectStatement.setLong(1, companyId);
-            ResultSet rs = selectStatement.executeQuery();
-            while (rs.next()) {
-                days.add(new Day(rs.getLong("company_id"), rs.getDate("forbidden_day")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return days;
-    }
 
     public List<Company> getCompaniesByCity(Long cityId) {
         List<Company> companies = new ArrayList<>();

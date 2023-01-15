@@ -4,11 +4,9 @@ import cloud.lambdas.dto.CityDto;
 import cloud.lambdas.dto.Mapper;
 import cloud.lambdas.dto.ServiceDto;
 import cloud.lambdas.pojo.Company;
-import cloud.lambdas.pojo.Day;
 import cloud.lambdas.pojo.Service;
 import cloud.lambdas.repository.CompanyRepository;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,18 +45,6 @@ public class CompanyService {
     }
     public boolean addCompanyService(Long companyId, Long serviceId, Long amount) {
         return companyRepository.addCompanyService(companyId, serviceId, amount);
-    }
-
-    public List<Day> getCompanyForbiddenDays(Long companyId) {
-        return companyRepository.getCompanyForbiddenDays(companyId);
-    }
-
-    public Day addForbiddenDay(Long companyId, String date) {
-        return companyRepository.addCompanyForbiddenDays(companyId, date);
-    }
-
-    public boolean deleteForbiddenDay(Long id) {
-        return companyRepository.deleteCompanyForbiddenDay(id);
     }
 
     public List<CityDto> getCompanyCities(Long id) {
