@@ -65,7 +65,7 @@ public class CityHandler {
         reader.close();
         writer.close();
     }
-    public void handleFindByComapnyIdAndNameRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+    public void handleFindByCompanyIdAndNameRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         JSONParser parser = new JSONParser();
