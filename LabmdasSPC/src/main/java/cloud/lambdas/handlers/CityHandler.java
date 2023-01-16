@@ -76,6 +76,45 @@ public class CityHandler {
             JSONObject reqObject = (JSONObject) parser.parse(reader);
             if (reqObject.get("pathParameters") != null) {
                 JSONObject qps = (JSONObject) reqObject.get("pathParameters");
+                if (qps.get("id") != null && qps.get("name")!=null) {
+                    Long id = (long) Integer.parseInt((String) qps.get("id"));
+                    String name = (String) qps.get("name");
+                    city = cityService.findCityByCompanyIdAndName(id,name);
+                }
+            } else {
+                responseBody.put("message", "Bad request");
+                responseObject.put("statusCode", 400);
+            }
+
+            if (city != null) {
+                responseBody.put("city", city);
+                responseObject.put("statusCode", 200);
+            } else {
+                responseBody.put("message", "No items found");
+                responseObject.put("statusCode", 404);
+            }
+
+            responseObject.put("body", gson.toJson(city));
+        } catch (ParseException | IOException e) {
+            responseObject.put("statusCode", 400);
+            responseObject.put("error", e);
+        }
+        writer.write(responseObject.toString());
+        reader.close();
+        writer.close();
+    }
+
+    public void handleFindByCompanyIdAndNameRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        JSONParser parser = new JSONParser();
+        JSONObject responseObject = new JSONObject();
+        JSONObject responseBody = new JSONObject();
+        City city = null;
+        try {
+            JSONObject reqObject = (JSONObject) parser.parse(reader);
+            if (reqObject.get("pathParameters") != null) {
+                JSONObject qps = (JSONObject) reqObject.get("pathParameters");
                 if (qps.get("id") != null) {
                     Long id = (long) Integer.parseInt((String) qps.get("id"));
                     city = cityService.findCityById(id);
@@ -102,6 +141,7 @@ public class CityHandler {
         reader.close();
         writer.close();
     }
+
     public List<City> handleGetAllCitiesRequest() {
         return cityService.getAllCities();
     }

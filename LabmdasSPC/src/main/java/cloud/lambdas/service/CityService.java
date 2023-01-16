@@ -26,6 +26,9 @@ public class CityService {
         return cityRepository.findCityByName(name);
     }
 
+    public City findCityByCompanyIdAndName(Long companyId, String name) {return
+            cityRepository.findCityByCompanyIdAndName(companyId,name);}
+
 
     public boolean addCity(String cityName, Long companyId) {
         return cityRepository.addCity(cityName, companyId);
